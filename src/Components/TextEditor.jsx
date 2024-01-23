@@ -17,16 +17,7 @@ const TextEditor = ({ socketRef,roomid }) => {
       };
     }
 
-    const handler = (delta, oldDelta, source) => {
-      if (source !== "user") return;
-      socketRef.current.emit("send-changes", {delta,roomid});
-    };
-    quill.on("text-change", handler);
-
-    return()=>{
-      quill.off('text-change',handler)
-    }
-
+  
     init();
   }, []);
   return <div id="container" ref={wrappeRef}></div>;
