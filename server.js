@@ -2,20 +2,21 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 
+
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
 const userSocketMap = {};
 const getAllConnectedlist = (roomid) => {
-  const allclinetlist = Array.from(io.sockets.adapter.rooms.get(roomid)) || [];
-  const clinetsInRomm = allclinetlist.map((sockerId) => {
-    return {
-      sockerId,
-      username: userSocketMap.username,
-    };
-  });
-  return clinetsInRomm;
+  return Array.from(io.sockets.adapter.rooms.get(roomid) || []).map(
+    (sockerId) => {
+      return {
+        sockerId,
+        username: userSocketMap[sockerId],
+      };
+    }
+  );
 };
 
 app.get("/", (req, res) => {
@@ -23,14 +24,14 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("a user connected", socket.id);
+  // console.log("a user connected", socket.id);
 
   socket.on("join", ({ roomid, username }) => {
     userSocketMap[socket.id] = username;
     socket.join(roomid);
 
     const clients = getAllConnectedlist(roomid);
-    
+    console.log(clients);
     clients.forEach(({ sockerId }) => {
       io.to(sockerId).emit("joined", {
         clients,
@@ -39,6 +40,19 @@ io.on("connection", (socket) => {
       });
     });
   });
+
+//leaving room
+  socket.on('disconnecting',()=>{
+    const rooms=[...socket.rooms]
+    rooms.forEach((roomId)=>{
+      socket.in(roomId).emit('disconnected',{
+        socketId:socket.id,
+        username:userSocketMap[socket.id]
+      })
+    })
+    delete userSocketMap[socket.id]
+    socket.leave()
+  })
 });
 
 const PORT = process.env.PORT || 5000;

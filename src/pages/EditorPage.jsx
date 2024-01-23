@@ -11,18 +11,8 @@ import toast from "react-hot-toast";
 import Action from "../Action";
 
 const EditorPage = () => {
-  const dummyData = [
-    { id: 1, username: "JohnDoe" },
-    { id: 2, username: "AliceSmith" },
-    { id: 3, username: "BobJohnson" },
-    { id: 4, username: "EveWilshubham" },
-    { id: 5, username: "EveWilshubham" },
-    { id: 6, username: "EveWilshubham" },
-    { id: 7, username: "EveWilshubham" },
-
-    // Add more data as needed
-  ];
-  const [userList, SetuserList] = useState(dummyData);
+ 
+  const [userList, SetuserList] = useState([]);
   const [value, setValue] = useState("");
 
   const { roomid } = useParams();
@@ -53,19 +43,37 @@ const EditorPage = () => {
         console.error("error in socket ", error);
       }
 
-      socketRef.current.on(
-        Action.JOINED,
-        ({ clients, username, socketId }) => {
-          if(username!==location.state.username){
-            toast.success(`${username} joined the room`)
-            console.log(`${username} joined`)
-           
+      try {
+        socketRef.current.on(
+          Action.JOINED,
+          ({ clients, username, socketId }) => {
+            if (username !== location.state) {
+              toast.success(`${username} joined the room`);
+              // console.log(`${username} joined`)
+            }
+            SetuserList(clients);
+            console.log(userList, "clinet jpied");
           }
-        }
-      );
+        );
+      } catch (error) {
+        console.log(error);
+      }
+
+      socketRef.current.on(Action.DISCONNECTED, ({ socketId, username }) => {
+        toast.success(`${username} left the room.`);
+        SetuserList((prev) => {
+          return prev.filter((client) => client.socketId !== socketId);
+        });
+      });
     };
 
     init();
+
+    return ()=>{
+      socketRef.current.disconnect();
+      socketRef.current.off(Action.JOIN);
+      socketRef.current.off(Action.DISCONNECTED);
+    }
   }, []);
 
   const leaveRoom = () => {
