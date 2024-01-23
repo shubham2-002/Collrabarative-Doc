@@ -10,10 +10,10 @@ const io = new Server(server);
 const userSocketMap = {};
 const getAllConnectedlist = (roomid) => {
   return Array.from(io.sockets.adapter.rooms.get(roomid) || []).map(
-    (sockerId) => {
+    (socketId) => {
       return {
-        sockerId,
-        username: userSocketMap[sockerId],
+        socketId,
+        username: userSocketMap[socketId],
       };
     }
   );
@@ -32,11 +32,11 @@ io.on("connection", (socket) => {
 
     const clients = getAllConnectedlist(roomid);
     console.log(clients);
-    clients.forEach(({ sockerId }) => {
-      io.to(sockerId).emit("joined", {
+    clients.forEach(({ socketId }) => {
+      io.to(socketId).emit("joined", {
         clients,
         username,
-        sockerId: socket.id,
+        socketId: socket.id,
       });
     });
   });
