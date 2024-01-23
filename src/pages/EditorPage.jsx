@@ -105,7 +105,7 @@ const EditorPage = () => {
             ))}
           </div>
         </div>
-        <div className="relative top-36">
+        <div className="relative top-80">
           <button
             className="bg-emerald-600 w-full text-white m-2 p-2 rounded-md"
             onClick={() => copyRoomId()}
