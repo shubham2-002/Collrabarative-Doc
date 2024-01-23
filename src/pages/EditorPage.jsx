@@ -78,9 +78,18 @@ const EditorPage = () => {
   }, []);
 
   const leaveRoom = () => {
-    toast(`${location.state} leaved room`);
     navigate("/");
   };
+
+  const copyRoomId= async()=>{
+    try{
+      await navigator.clipboard.writeText(roomid)
+      toast.success('Copied to Clipboard')
+    }catch(error){
+      console.log(error)
+      toast.error('Failed to Copy Room ID')
+    }
+  }
 
   return (
     <div className="w-screen h-screen bg-[#fafafa] grid grid-cols-[.5fr,2fr]">
@@ -92,14 +101,14 @@ const EditorPage = () => {
           <h2 className="text-xl">Connected Users..</h2>
           <div className="grid grid-cols-3 gap-6 mt-4  ">
             {userList.map((user) => (
-              <Users username={user.username} key={user.id} />
+              <Users username={user.username} key={user.socketId} />
             ))}
           </div>
         </div>
         <div className="relative top-36">
           <button
             className="bg-emerald-600 w-full text-white m-2 p-2 rounded-md"
-            onClick={() => console.log(roomid)}
+            onClick={() => copyRoomId()}
           >
             Coppy Room ID
           </button>
