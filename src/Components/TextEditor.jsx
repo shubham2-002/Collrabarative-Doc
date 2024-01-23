@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Quill } from "react-quill";
 import "../App.css";
 
-const TextEditor = ({ socketRef,roomid }) => {
+const TextEditor = ({ socketRef, roomid }) => {
   const wrappeRef = useRef();
   const [quill, SetQuill] = useState();
 
@@ -12,14 +12,22 @@ const TextEditor = ({ socketRef,roomid }) => {
       wrappeRef.current.append(editor);
       const q = new Quill(editor, { theme: "snow" });
       SetQuill(q);
+
+      const handler = (delta, oldDelta, source) => {
+        if (source !== "user") return;
+        socketRef.current.emit("send-changes", { delta, roomid });
+      };
+      q.on("text-change", handler)
+      
+
       return () => {
         wrappeRef.innerHTML = "";
+        q.off('text-change',handler)
       };
     }
 
-  
     init();
-  }, []);
+  }, [socketRef, roomid]);
   return <div id="container" ref={wrappeRef}></div>;
 };
 
