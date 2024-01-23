@@ -5,14 +5,15 @@ import "../App.css";
 const TextEditor = ({ socketRef, roomid }) => {
   const wrappeRef = useRef();
   const [quill, SetQuill] = useState();
-  
+  const  quilRef = useRef(null)
 
   useEffect(() => {
+    let q;
     async function init() {
       const editor = document.createElement("div");
       wrappeRef.current.append(editor);
       const q = new Quill(editor, { theme: "snow" });
-      SetQuill(q);
+     quilRef.current=q;
 
       const handler = (delta, oldDelta, source) => {
         if (source !== "user") return;
@@ -29,6 +30,16 @@ const TextEditor = ({ socketRef, roomid }) => {
 
     init();
   }, []);
+
+
+  useEffect(()=>{
+    if(socketRef.current){
+      socketRef.current.on('receive-changes',({delta})=>{
+        console.log('received changes',delta)
+        quilRef.current.updateContents(delta)
+      })
+    }
+  },[socketRef.current])
   return <div id="container" ref={wrappeRef}></div>;
 };
 

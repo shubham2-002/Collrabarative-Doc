@@ -55,6 +55,8 @@ io.on("connection", (socket) => {
   })
 
   socket.on('send-changes',({delta,roomid})=>{
+    
+    socket.in(roomid).emit('receive-changes',{delta})
     console.log(delta)
   })
 });
