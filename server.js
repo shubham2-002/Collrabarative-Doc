@@ -53,6 +53,10 @@ io.on("connection", (socket) => {
     delete userSocketMap[socket.id]
     socket.leave()
   })
+
+  socket.on('send-changes',({delta,roomid})=>{
+    console.log(delta)
+  })
 });
 
 const PORT = process.env.PORT || 5000;

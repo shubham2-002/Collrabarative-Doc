@@ -9,6 +9,7 @@ import "react-quill/dist/quill.snow.css";
 import "../App.css";
 import toast from "react-hot-toast";
 import Action from "../Action";
+import TextEditor from "../Components/TextEditor";
 
 const EditorPage = () => {
  
@@ -111,7 +112,7 @@ const EditorPage = () => {
         </div>
       </div>
       <div className="container">
-        <ReactQuill theme="snow" value={value} onChange={setValue} />
+       <TextEditor socketRef={socketRef} roomid={roomid}/>
       </div>
     </div>
   );
