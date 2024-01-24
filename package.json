@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev:front": "vite",
-    "dev": "npm run build && server:prod",
+    "dev:": "vite",
     "server:dev": "nodemon server.js",
     "server:prod": "nodemon server.js",
     "build": "vite build",
