@@ -1,11 +1,19 @@
 import express from "express";
 import { createServer } from "http";
+import path from "path";
 import { Server } from "socket.io";
 
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
+
+app.use(express.static('dist'))
+const __dirname = path.resolve(path.dirname(''))
+
+app.use((req,res,next)=>{
+  res.sendFile(path.join(__dirname,'dist','index.html'))
+})
 
 const userSocketMap = {};
 const getAllConnectedlist = (roomid) => {
