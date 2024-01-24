@@ -42,6 +42,12 @@ Create and collaborate on documents in real-time with this collaborative documen
    # In a separate terminal, run the development server for the back end 🚀
    npm run server:dev
 ```
+
+
+## Demo
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/AXHdAAUdWR0/0.jpg)](https://www.youtube.com/watch?v=AXHdAAUdWR0)
+
 ##  Star 🌟
 
 If you find this project helpful or interesting, please consider giving it a star on GitHub! ⭐
