@@ -48,6 +48,12 @@ Create and collaborate on documents in real-time with this collaborative documen
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/AXHdAAUdWR0/0.jpg)](https://www.youtube.com/watch?v=AXHdAAUdWR0)
 
+
+https://github.com/shubham2-002/Collrabarative-Doc/assets/79524451/92a5f100-789e-40bd-bb62-9a83cd2a649d
+
+
+
+
 ##  Star 🌟
 
 If you find this project helpful or interesting, please consider giving it a star on GitHub! ⭐
